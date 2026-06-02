@@ -346,26 +346,46 @@ function fileToBase64(file) {
 }
 
 async function analyzeWithClaude(base64, mediaType, apiKey) {
-  const prompt = `Analizá esta factura o remito de un proveedor de alimentos de Argentina.
-Extraé TODOS los datos y respondé ÚNICAMENTE con un JSON válido, sin texto adicional, con esta estructura exacta:
+  const prompt = `Analizá este documento de un proveedor de alimentos de Argentina. Puede ser una FACTURA o un REMITO.
+
+REGLAS IMPORTANTES:
+
+1. TIPO DE DOCUMENTO:
+   - Si dice FACTURA A, B o C, o tiene datos de AFIP/ARCA (CUIT, CAE, vencimiento CAE) -> es una FACTURA
+   - Si dice REMITO, ORDEN DE CARGA, ORDEN DE ENTREGA, o NO tiene datos de AFIP -> es un REMITO
+   - En REMITO: el numero de pedido/orden va en numero_remito y numero_factura queda vacio
+   - En FACTURA: el numero va en numero_factura y numero_remito queda vacio
+
+2. PRECIOS Y DECIMALES - MUY IMPORTANTE:
+   - En Argentina los precios usan COMA para decimales y PUNTO para miles
+   - Ejemplo: $3.426,63 = 3426.63 en el JSON (NO 342663)
+   - Ejemplo: $18.598,00 = 18598.00 en el JSON (NO 1859800)
+   - Ejemplo: $1.374.025,00 = 1374025.00 en el JSON
+   - Siempre convierte la coma decimal a punto decimal en el JSON
+   - Si el precio parece un numero entero muy largo, revisa si tiene decimales
+
+3. PROVEEDOR: busca la razon social de quien emite el documento. Si no esta claro pon DESCONOCIDO.
+
+Responde UNICAMENTE con JSON valido sin texto adicional, con esta estructura:
 {
-  "proveedor": "nombre del proveedor en mayúsculas",
+  "tipo_documento": "FACTURA o REMITO",
+  "proveedor": "nombre del proveedor en mayusculas",
   "fecha": "YYYY-MM-DD",
-  "numero_factura": "número de factura o remito",
-  "numero_remito": "número de remito si existe, sino vacío",
+  "numero_factura": "numero si es factura, sino cadena vacia",
+  "numero_remito": "numero si es remito, sino cadena vacia",
   "items": [
     {
-      "producto": "nombre del producto",
-      "categoria": "Fiambres y Quesos|Pan|Verdulería|Vermut|Insumos barra|Limpieza|Descartables|Cocina|Otro",
-      "kg": número o null,
-      "unidades": número o null,
-      "precio_unitario": número sin puntos ni comas (solo el número),
-      "total": número sin puntos ni comas,
-      "confianza": "alta|media|baja"
+      "producto": "nombre completo del producto",
+      "categoria": "Fiambres y Quesos o Pan o Verduleria o Vermut o Insumos barra o Limpieza o Descartables o Cocina o Otro",
+      "kg": null,
+      "unidades": 1,
+      "precio_unitario": 3426.63,
+      "total": 3426.63,
+      "confianza": "alta o media o baja"
     }
   ]
 }
-Si no podés leer algún dato con certeza, marcá confianza como "baja". No inventes datos.`;
+Si no podes leer algun dato con certeza, marca confianza como baja. No inventes datos.`
 
   const body = {
     model: "claude-sonnet-4-6",
