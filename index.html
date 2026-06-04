@@ -154,8 +154,8 @@
         </div>
       </div>
     </div>
-    <input type="file" id="file-camera" accept="image/*" capture="environment" onchange="handleFile(event)" style="display:none">
-    <input type="file" id="file-picker" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,image/heic,image/heif,application/pdf" onchange="handleFile(event)" style="display:none">
+    <input type="file" id="file-camera" accept="image/*" capture="environment" style="display:none">
+    <input type="file" id="file-picker" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,image/heic,image/heif,application/pdf" style="display:none">
     <img id="preview-img" class="preview-img hidden" alt="Vista previa">
     <div class="analyzing hidden" id="analyzing">
       <div class="spinner"></div>
@@ -326,7 +326,38 @@ function handleDrop(e) {
   const file = e.dataTransfer.files[0];
   if (file) processFile(file);
 }
-function handleFile(e) { if (e.target.files[0]) processFile(e.target.files[0]); }
+function handleFile(e) {
+  const file = e.target.files && e.target.files[0];
+  if (file) {
+    processFile(file);
+  }
+  // Reset input so same file can be selected again
+  e.target.value = '';
+}
+
+function initFileInputs() {
+  const camera = document.getElementById('file-camera');
+  const picker = document.getElementById('file-picker');
+  
+  function onFileSelected(e) {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      processFile(file);
+    }
+    e.target.value = '';
+  }
+  
+  if (camera) {
+    camera.addEventListener('change', onFileSelected);
+    // iOS fallback
+    camera.addEventListener('input', onFileSelected);
+  }
+  if (picker) {
+    picker.addEventListener('change', onFileSelected);
+    // iOS fallback  
+    picker.addEventListener('input', onFileSelected);
+  }
+}
 
 async function processFile(file) {
   const apiKey = localStorage.getItem('gm_api_key');
@@ -653,6 +684,7 @@ function showUploadError(msg) { const el = document.getElementById('upload-error
 function showSaveError(msg) { const el = document.getElementById('save-error'); el.textContent = msg; showEl('save-error'); }
 
 loadConfig();
+initFileInputs();
 
 // Saludo por hora del dia
 (function() {
