@@ -408,32 +408,63 @@ function fileToBase64(file) {
 
 function convertToJpeg(file) {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        // Escalar si la imagen es muy grande (max 2000px) para acelerar el proceso
-        let w = img.width, h = img.height;
-        const maxDim = 2000;
-        if (w > maxDim || h > maxDim) {
-          if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
-          else { w = Math.round(w * maxDim / h); h = maxDim; }
-        }
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, w, h);
-        ctx.drawImage(img, 0, 0, w, h);
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
-        resolve({ base64: dataUrl.split(',')[1] });
-      };
-      img.onerror = reject;
-      img.src = e.target.result;
+    // Crear URL del objeto para el blob
+    const objectUrl = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+      const canvas = document.createElement('canvas');
+      let w = img.width, h = img.height;
+      // Si las dimensiones son 0, rechazar
+      if (!w || !h) { reject(new Error('Imagen sin dimensiones')); return; }
+      const maxDim = 1800;
+      if (w > maxDim || h > maxDim) {
+        if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
+        else { w = Math.round(w * maxDim / h); h = maxDim; }
+      }
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+      ctx.drawImage(img, 0, 0, w, h);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.88);
+      const base64 = dataUrl.split(',')[1];
+      if (!base64 || base64.length < 100) {
+        reject(new Error('No se pudo convertir la imagen'));
+        return;
+      }
+      resolve({ base64 });
     };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
+    img.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      // Fallback: intentar con FileReader
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img2 = new Image();
+        img2.onload = () => {
+          const canvas = document.createElement('canvas');
+          let w = img2.width || 800, h = img2.height || 600;
+          const maxDim = 1800;
+          if (w > maxDim || h > maxDim) {
+            if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
+            else { w = Math.round(w * maxDim / h); h = maxDim; }
+          }
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, w, h);
+          ctx.drawImage(img2, 0, 0, w, h);
+          resolve({ base64: canvas.toDataURL('image/jpeg', 0.88).split(',')[1] });
+        };
+        img2.onerror = () => reject(new Error('No se pudo leer la imagen. Probá sacar la foto directamente con la cámara.'));
+        img2.src = e.target.result;
+      };
+      reader.onerror = () => reject(new Error('Error al leer el archivo'));
+      reader.readAsDataURL(file);
+    };
+    img.src = objectUrl;
   });
 }
 
