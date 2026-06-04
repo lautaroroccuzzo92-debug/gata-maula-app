@@ -4,37 +4,38 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gata Maula — Ingreso de Mercadería</title>
+  <meta name="theme-color" content="#A8D4E0">
 <style>
   *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
   body{background:#f0f4f0;min-height:100vh;padding:16px}
   .container{max-width:560px;margin:0 auto}
-  .header{background:#0F6E56;border-radius:16px;padding:20px;margin-bottom:16px;display:flex;align-items:center;gap:14px}
-  .logo{width:48px;height:48px;background:#1D9E75;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:16px;flex-shrink:0}
+  .header{background:#1a1a1a;border-radius:16px;padding:20px;margin-bottom:16px;display:flex;align-items:center;gap:14px}
+  .logo{width:48px;height:48px;background:#A8D4E0;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:16px;flex-shrink:0}
   .header-text h1{color:#fff;font-size:18px;font-weight:600}
-  .header-text p{color:#9FE1CB;font-size:13px;margin-top:2px}
+  .header-text p{color:#A8D4E0;font-size:13px;margin-top:2px}
   .card{background:#fff;border-radius:16px;padding:20px;margin-bottom:16px;border:1px solid #e8ede8}
-  .card-title{font-size:13px;font-weight:600;color:#0F6E56;text-transform:uppercase;letter-spacing:.05em;margin-bottom:14px;display:flex;align-items:center;gap:6px}
-  .upload-zone{border:2px dashed #9FE1CB;border-radius:12px;padding:28px 20px;text-align:center;background:#E1F5EE;cursor:pointer;transition:all .2s}
-  .upload-zone:hover{background:#d0f0e4;border-color:#1D9E75}
-  .upload-zone.dragover{background:#c5eada;border-color:#0F6E56}
-  .upload-icon{width:52px;height:52px;background:#1D9E75;border-radius:14px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center}
+  .card-title{font-size:13px;font-weight:600;color:#1a1a1a;text-transform:uppercase;letter-spacing:.05em;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+  .upload-zone{border:2px dashed #A8D4E0;border-radius:12px;padding:28px 20px;text-align:center;background:#EAF5F9;cursor:pointer;transition:all .2s}
+  .upload-zone:hover{background:#d0f0e4;border-color:#2590A8}
+  .upload-zone.dragover{background:#c5eada;border-color:#1a1a1a}
+  .upload-icon{width:52px;height:52px;background:#A8D4E0;border-radius:14px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center}
   .upload-icon svg{width:26px;height:26px;stroke:#fff;fill:none;stroke-width:2}
-  .upload-title{font-size:15px;font-weight:600;color:#085041;margin-bottom:4px}
-  .upload-sub{font-size:13px;color:#0F6E56}
-  .btn-file{display:inline-block;margin-top:12px;padding:8px 20px;background:#0F6E56;color:#fff;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+  .upload-title{font-size:15px;font-weight:600;color:#1a1a1a;margin-bottom:4px}
+  .upload-sub{font-size:13px;color:#1a1a1a}
+  .btn-file{display:inline-block;margin-top:12px;padding:8px 20px;background:#1a1a1a;color:#fff;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
   input[type=file]{display:none}
   .preview-img{width:100%;border-radius:10px;margin-top:12px;border:1px solid #c8e8c8;max-height:220px;object-fit:contain;background:#f8faf8}
   .analyzing{display:none;text-align:center;padding:20px}
-  .spinner{width:36px;height:36px;border:3px solid #E1F5EE;border-top:3px solid #0F6E56;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 12px}
+  .spinner{width:36px;height:36px;border:3px solid #EAF5F9;border-top:3px solid #1a1a1a;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 12px}
   @keyframes spin{to{transform:rotate(360deg)}}
-  .analyzing p{color:#0F6E56;font-size:14px;font-weight:500}
+  .analyzing p{color:#1a1a1a;font-size:14px;font-weight:500}
   .analyzing small{color:#888;font-size:12px;margin-top:4px;display:block}
   .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
   .field-grid.full{grid-template-columns:1fr}
   label{font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:4px}
   input,select,textarea{width:100%;padding:9px 11px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:14px;color:#222;background:#fafafa;transition:border .15s}
-  input:focus,select:focus,textarea:focus{outline:none;border-color:#0F6E56;background:#fff}
-  .ai-badge{display:inline-flex;align-items:center;gap:4px;background:#E1F5EE;color:#085041;font-size:11px;padding:3px 8px;border-radius:6px;font-weight:600;margin-bottom:12px}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:#1a1a1a;background:#fff}
+  .ai-badge{display:inline-flex;align-items:center;gap:4px;background:#EAF5F9;color:#1a1a1a;font-size:11px;padding:3px 8px;border-radius:6px;font-weight:600;margin-bottom:12px}
   .items-section{margin-top:4px}
   .item-card{background:#f8faf8;border:1px solid #e8ede8;border-radius:10px;padding:12px;margin-bottom:8px;position:relative}
   .item-card.warning{background:#FFFDE7;border-color:#F9A825}
@@ -46,25 +47,25 @@
   .item-fields input{padding:7px 9px;font-size:13px}
   .remove-btn{background:none;border:none;cursor:pointer;color:#ccc;font-size:18px;line-height:1;padding:0 4px}
   .remove-btn:hover{color:#e53935}
-  .add-item-btn{width:100%;padding:9px;border:1.5px dashed #9FE1CB;border-radius:8px;background:none;color:#0F6E56;font-size:13px;font-weight:600;cursor:pointer;margin-top:4px}
-  .add-item-btn:hover{background:#E1F5EE}
+  .add-item-btn{width:100%;padding:9px;border:1.5px dashed #C5E8F0;border-radius:8px;background:none;color:#1a1a1a;font-size:13px;font-weight:600;cursor:pointer;margin-top:4px}
+  .add-item-btn:hover{background:#EAF5F9}
   .price-update{background:#E3F2FD;border:1px solid #90CAF9;border-radius:10px;padding:14px;margin-bottom:8px}
   .price-update-title{font-size:13px;font-weight:600;color:#0C447C;margin-bottom:10px;display:flex;align-items:center;gap:6px}
   .price-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #BBDEFB;font-size:13px}
   .price-row:last-child{border-bottom:none}
   .price-old{color:#888;text-decoration:line-through}
-  .price-new{color:#0F6E56;font-weight:600}
+  .price-new{color:#1a1a1a;font-weight:600}
   .price-diff{font-size:11px;padding:2px 6px;border-radius:4px;font-weight:600}
   .price-diff.up{background:#FFEBEE;color:#C62828}
   .price-diff.down{background:#E8F5E9;color:#2E7D32}
-  .btn-primary{width:100%;padding:14px;background:#0F6E56;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}
-  .btn-primary:hover{background:#085041}
-  .btn-primary:disabled{background:#9FE1CB;cursor:not-allowed}
-  .btn-secondary{width:100%;padding:11px;background:#fff;color:#0F6E56;border:1.5px solid #0F6E56;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:8px}
-  .btn-secondary:hover{background:#E1F5EE}
+  .btn-primary{width:100%;padding:14px;background:#2590A8;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}
+  .btn-primary:hover{background:#1a6e80}
+  .btn-primary:disabled{background:#C5E8F0;cursor:not-allowed}
+  .btn-secondary{width:100%;padding:11px;background:#fff;color:#1a1a1a;border:1.5px solid #1a1a1a;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:8px}
+  .btn-secondary:hover{background:#EAF5F9}
   .success-card{background:#E8F5E9;border:1px solid #A5D6A7;border-radius:16px;padding:24px;text-align:center}
-  .success-icon{width:56px;height:56px;background:#E1F5EE;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center}
-  .success-icon svg{width:28px;height:28px;stroke:#0F6E56;fill:none;stroke-width:2.5}
+  .success-icon{width:56px;height:56px;background:#EAF5F9;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center}
+  .success-icon svg{width:28px;height:28px;stroke:#1a1a1a;fill:none;stroke-width:2.5}
   .success-title{font-size:17px;font-weight:700;color:#1B5E20;margin-bottom:6px}
   .success-sub{font-size:13px;color:#2E7D32;line-height:1.6}
   .sheets-link{display:flex;align-items:center;gap:8px;background:#fff;border-radius:10px;padding:10px 14px;margin:14px 0;border:1px solid #A5D6A7;text-decoration:none}
@@ -72,24 +73,31 @@
   .sheets-link span{font-size:13px;color:#1B5E20;font-weight:500}
   .config-note{background:#FFF8E1;border:1px solid #FFE082;border-radius:10px;padding:12px 14px;font-size:12px;color:#5D4037;line-height:1.6;margin-top:8px}
   .config-note strong{color:#3E2723}
-  .step-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#0F6E56;color:#fff;border-radius:50%;font-size:11px;font-weight:700;flex-shrink:0}
+  .step-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#1a1a1a;color:#fff;border-radius:50%;font-size:11px;font-weight:700;flex-shrink:0}
   .hidden{display:none}
   .error-msg{background:#FFEBEE;border:1px solid #FFCDD2;border-radius:8px;padding:10px 14px;font-size:13px;color:#B71C1C;margin-top:8px}
   .config-section{background:#fff;border-radius:16px;padding:20px;margin-bottom:16px;border:1px solid #e8ede8}
   .config-input-row{display:flex;gap:8px;align-items:flex-end}
   .config-input-row input{flex:1}
-  .config-input-row button{padding:9px 14px;background:#0F6E56;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
-  .saved-badge{font-size:11px;color:#0F6E56;font-weight:600;display:none}
+  .config-input-row button{padding:9px 14px;background:#1a1a1a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+  .saved-badge{font-size:11px;color:#1a1a1a;font-weight:600;display:none}
 </style>
 </head>
 <body>
 <div class="container">
 
-  <div class="header">
-    <div class="logo">GM</div>
-    <div class="header-text">
-      <h1>Gata Maula</h1>
-      <p>Ingreso de mercadería con IA</p>
+  <div class="header" style="background:linear-gradient(135deg,#1a1a1a 0%,#2C2C2A 100%);padding:0;overflow:hidden;border-radius:16px;margin-bottom:16px">
+    <div style="background:#A8D4E0;padding:20px 20px 14px;display:flex;align-items:center;gap:14px">
+      <svg width="56" height="56" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="200" rx="16" fill="#A8D4E0"/>
+        <text x="100" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="28" font-weight="900" fill="#1a1a1a" letter-spacing="8">—GATA—</text>
+        <text x="100" y="130" text-anchor="middle" font-family="Georgia,serif" font-size="52" font-weight="900" fill="white" stroke="#1a1a1a" stroke-width="3" letter-spacing="2">MAULA</text>
+        <text x="100" y="162" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#1a1a1a" letter-spacing="6">FIAMBRES + VERMUT</text>
+      </svg>
+      <div>
+        <div id="saludo-hora" style="color:#1a1a1a;font-size:14px;font-weight:600;margin-bottom:2px"></div>
+        <div style="color:#1a1a1a;font-size:12px;opacity:.7">Ingreso de mercadería con IA</div>
+      </div>
     </div>
   </div>
 
@@ -130,15 +138,23 @@
       <span class="step-badge">1</span>
       Fotografiar o subir factura / remito
     </div>
-    <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()" ondragover="handleDrag(event)" ondrop="handleDrop(event)">
+    <div class="upload-zone" id="upload-zone" ondragover="handleDrag(event)" ondrop="handleDrop(event)">
       <div class="upload-icon">
         <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
       </div>
-      <div class="upload-title">Sacar foto o subir archivo</div>
-      <div class="upload-sub">JPG, PNG o PDF de la factura o remito</div>
-      <div class="btn-file">Seleccionar archivo</div>
+      <div class="upload-title">Fotografiar o subir documento</div>
+      <div class="upload-sub">Factura o remito — foto, JPG, PNG o PDF</div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px">
+        <div class="btn-file" onclick="document.getElementById('file-camera').click()">
+          📷 Sacar foto
+        </div>
+        <div class="btn-file" style="background:#185FA5" onclick="document.getElementById('file-picker').click()">
+          📎 Subir archivo
+        </div>
+      </div>
     </div>
-    <input type="file" id="file-input" accept="image/*,.pdf" capture="environment" onchange="handleFile(event)">
+    <input type="file" id="file-camera" accept="image/*" capture="environment" onchange="handleFile(event)" style="display:none">
+    <input type="file" id="file-picker" accept="image/*,.pdf,application/pdf" onchange="handleFile(event)" style="display:none">
     <img id="preview-img" class="preview-img hidden" alt="Vista previa">
     <div class="analyzing hidden" id="analyzing">
       <div class="spinner"></div>
@@ -292,6 +308,14 @@ function saveConfig() {
   localStorage.setItem('gm_nombre', nombre);
   document.getElementById('saved-badge').style.display = 'block';
   document.getElementById('saved-badge').textContent = '✓ Configuración guardada correctamente';
+  // Actualizar saludo con nombre guardado
+  const hora = new Date().getHours();
+  const nombre = document.getElementById('cfg-nombre').value.trim();
+  let saludo = hora < 12 ? 'Buenos días' : hora < 19 ? 'Buenas tardes' : 'Buenas noches';
+  if (nombre) saludo += ', ' + nombre + '!';
+  else saludo += '!';
+  const elS = document.getElementById('saludo-hora');
+  if (elS) elS.textContent = saludo;
 }
 
 function handleDrag(e) { e.preventDefault(); document.getElementById('upload-zone').classList.add('dragover'); }
@@ -628,6 +652,17 @@ function showUploadError(msg) { const el = document.getElementById('upload-error
 function showSaveError(msg) { const el = document.getElementById('save-error'); el.textContent = msg; showEl('save-error'); }
 
 loadConfig();
+
+// Saludo por hora del dia
+(function() {
+  const hora = new Date().getHours();
+  const nombre = localStorage.getItem('gm_nombre') || '';
+  let saludo = hora < 12 ? 'Buenos días' : hora < 19 ? 'Buenas tardes' : 'Buenas noches';
+  if (nombre) saludo += ', ' + nombre + '!';
+  else saludo += '!';
+  const el = document.getElementById('saludo-hora');
+  if (el) el.textContent = saludo;
+})();
 </script>
 </body>
 </html>
