@@ -139,23 +139,20 @@
       <span class="step-badge">1</span>
       Fotografiar o subir factura / remito
     </div>
-    <div class="upload-zone" id="upload-zone" ondragover="handleDrag(event)" ondrop="handleDrop(event)">
-      <div class="upload-icon">
-        <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-      </div>
-      <div class="upload-title">Fotografiar o subir documento</div>
-      <div class="upload-sub">Factura o remito — foto, JPG, PNG o PDF</div>
-      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px">
-        <div class="btn-file" onclick="document.getElementById('file-camera').click()">
-          📷 Sacar foto
-        </div>
-        <div class="btn-file" style="background:#185FA5" onclick="document.getElementById('file-picker').click()">
-          📎 Subir archivo
-        </div>
-      </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px">
+      <label for="file-camera" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:20px 10px;background:#EAF5F9;border:2px dashed #A8D4E0;border-radius:12px;cursor:pointer;text-align:center">
+        <span style="font-size:28px">📷</span>
+        <span style="font-size:13px;font-weight:600;color:#1a1a1a">Sacar foto</span>
+        <span style="font-size:11px;color:#666">Abre la cámara</span>
+      </label>
+      <label for="file-picker" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:20px 10px;background:#EAF5F9;border:2px dashed #A8D4E0;border-radius:12px;cursor:pointer;text-align:center">
+        <span style="font-size:28px">🖼️</span>
+        <span style="font-size:13px;font-weight:600;color:#1a1a1a">Desde galería</span>
+        <span style="font-size:11px;color:#666">Foto o PDF guardado</span>
+      </label>
     </div>
     <input type="file" id="file-camera" accept="image/*" capture="environment" style="display:none">
-    <input type="file" id="file-picker" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,image/heic,image/heif,application/pdf" style="display:none">
+    <input type="file" id="file-picker" accept="image/*,application/pdf" style="display:none">
     <img id="preview-img" class="preview-img hidden" alt="Vista previa">
     <div class="analyzing hidden" id="analyzing">
       <div class="spinner"></div>
